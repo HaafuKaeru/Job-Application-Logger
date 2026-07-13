@@ -1,6 +1,6 @@
 from pprint import pprint
 from sheet_manager import SheetManager
-from web_scraper import LinkedinScraper
+from web_scraper import LinkedinScraper, IndeedScraper
 from date_calculator import DateCalculator
 
 
@@ -9,18 +9,26 @@ def main():
     print("\nWell done for applying :) Let's update the Google sheet")
     while True:
         user_input = input("Link: ")
-        if user_input.lower() == "exit":
+        if user_input.lower() == "done":
             print("Keep fighting! ✊")
             break
+
+        if "linkedin" in user_input:
+            page_scraper = LinkedinScraper(user_input)
+        elif "indeed" in user_input:
+            page_scraper = IndeedScraper(user_input)
+        else:
+            print("Please insert a linkedin or indeed link\n")
+            continue
+        company_name = page_scraper.get_company_name()
+
         yes_no = input("Is this from a recruiting company? yes/no: ")
         is_recruiter = True if yes_no.lower() == "yes" else False
 
-        linkedin_scraper = LinkedinScraper(user_input)
-        company_name = linkedin_scraper.get_company_name()
         if is_recruiter:
             company_name = f"N/A [{company_name}]"
-        location = linkedin_scraper.get_location()
-        position_name = linkedin_scraper.get_position_name()
+        location = page_scraper.get_location()
+        position_name = page_scraper.get_position_name()
 
         date_calculator = DateCalculator()
         date = date_calculator.get_date()
@@ -32,10 +40,10 @@ def main():
             position_name,
             date,
             user_input,
-            linkedin_scraper.site
+            page_scraper.site
         )
-
         pprint(result)
+
         print("")
 
 
