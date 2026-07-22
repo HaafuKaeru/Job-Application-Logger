@@ -72,6 +72,8 @@ class IndeedScraper(PageScraper):
     html scraper for pages of the form
         https://uk.indeed.com/viewjob?jk=job_listing_id&hl=en
 
+    ***This is currently not working
+
     TODO: Indeed has a strict security check to prevent scraping
 
     Failed attempts:

@@ -12,6 +12,9 @@ def main():
         if user_input.lower() == "done":
             print("Keep fighting! ✊")
             break
+        elif "http" not in user_input.lower():
+            print("Please input a valid link")
+            continue
 
         if "linkedin" in user_input:
             page_scraper = LinkedinScraper(user_input)
