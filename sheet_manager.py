@@ -12,6 +12,7 @@ class SheetManager:
     def __init__(self):
         self.bearer_token = os.getenv("SHEETY_JOB_APPLICATIONS_API_BEARER_TOKEN")
         self.url = os.getenv("SHEETY_JOB_APPLICATIONS_API_URL")
+        self._check_env_vars()
 
     def _api_header(self):
         auth_header = {
@@ -39,3 +40,7 @@ class SheetManager:
         )
         rsp.raise_for_status()
         return rsp.json()
+
+    def _check_env_vars(self):
+        if not all((self.url, self.bearer_token)):
+            raise EnvironmentError("Environmental variables are not properly loaded. Check the .env file.")
