@@ -12,8 +12,7 @@ class DateCalculator:
     def get_date(self) -> str:
         if self.now.hour < 5:  # before 5am
             return self._get_yesterday()
-        date = self.now.date().strftime("%d/%m")
-        date = date.replace("0", "")
+        date = self.now.date().strftime("%#d/%#m")
         return date
 
     def _get_yesterday(self) -> str:
