@@ -1,6 +1,6 @@
 from pprint import pprint
 from sheet_manager import SheetManager
-from web_scraper import LinkedinScraper, IndeedScraper
+from web_scraper import LinkedinScraper, IndeedScraper, TotalJobsScraper
 from date_calculator import DateCalculator
 
 
@@ -20,6 +20,8 @@ def main():
             page_scraper = LinkedinScraper(user_input)
         elif "indeed" in user_input:
             page_scraper = IndeedScraper(user_input)
+        elif "totaljobs" in user_input:
+            page_scraper = TotalJobsScraper(user_input)
         else:
             print("Please insert a linkedin or indeed link\n")
             continue
