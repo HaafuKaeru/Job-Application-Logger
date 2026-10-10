@@ -65,6 +65,8 @@ class LinkedinScraper(PageScraper):
         spans = h4_tag.select("span")
         location = spans[1].text.strip()
         location = location.split(",")[0]  # get only first city name
+        if location == "United Kingdom":
+            return "Remote"
         return location
 
     def get_position_name(self) -> str:
