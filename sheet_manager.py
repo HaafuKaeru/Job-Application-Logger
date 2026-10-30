@@ -1,17 +1,20 @@
 import requests
 import os
-from dotenv import load_dotenv
+import dotenv
 
 
-load_dotenv(".env")
+dotenv.load_dotenv(".env")
+SHEETY_API_BEARER_TOKEN = os.getenv("sheety_job_applications_api_bearer_token")
+SHEETY_API_URL = os.getenv("sheety_job_applications_api_url")
+
 
 class SheetManager:
     """
     Class to manage the Google sheet (Sheety API)
     """
     def __init__(self):
-        self.bearer_token = os.getenv("SHEETY_JOB_APPLICATIONS_API_BEARER_TOKEN")
-        self.url = os.getenv("SHEETY_JOB_APPLICATIONS_API_URL")
+        self.bearer_token = SHEETY_API_BEARER_TOKEN
+        self.url = SHEETY_API_URL
         self._check_env_vars()
 
     def _api_header(self):

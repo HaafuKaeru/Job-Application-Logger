@@ -1,34 +1,44 @@
 from pprint import pprint
 from sheet_manager import SheetManager
-from web_scraper import LinkedinScraper, IndeedScraper, TotalJobsScraper
+from web_scraper import LinkedinScraper, IndeedScraper, TotalJobsScraper, ReedScraper
 from date_calculator import DateCalculator
+
+
+def clean_url(url: str) -> str:
+    """
+    Removes any GET request parameters
+    """
+    return url.split("?")[0]
 
 
 def main():
 
     print("\nWell done for applying :) Let's update the Google sheet")
     while True:
-        user_input = input("Link: ")
-        if user_input.lower() == "done":
+        input_link = input("Link: ")
+        if input_link.lower() == "done":
             print("Keep fighting! ✊")
             break
-        elif "http" not in user_input.lower():
+        elif "http" not in input_link.lower():
             print("Please input a valid link")
             continue
 
-        if "linkedin" in user_input:
-            page_scraper = LinkedinScraper(user_input)
-        elif "indeed" in user_input:
-            page_scraper = IndeedScraper(user_input)
-        elif "totaljobs" in user_input:
-            page_scraper = TotalJobsScraper(user_input)
+        link = clean_url(input_link)
+        if "linkedin" in link:
+            page_scraper = LinkedinScraper(link)
+        elif "indeed" in link:
+            page_scraper = IndeedScraper(link)
+        elif "totaljobs" in link:
+            page_scraper = TotalJobsScraper(link)
+        elif "reed" in link:
+            page_scraper = ReedScraper(link)
         else:
-            print("Please insert a linkedin or indeed link\n")
+            print("Please insert a supported job posting website link\n")
             continue
         company_name = page_scraper.get_company_name()
 
         yes_no = input("Is this from a recruiting company? yes/no: ")
-        is_recruiter = True if yes_no.lower() == "yes" else False
+        is_recruiter = True if "yes" in yes_no.lower() else False
 
         if is_recruiter:
             company_name = f"N/A [{company_name}]"
@@ -44,11 +54,10 @@ def main():
             location,
             position_name,
             date,
-            user_input,
+            link,
             page_scraper.site
         )
         pprint(result)
-
         print("")
 
 

@@ -1,23 +1,17 @@
-import requests
 from bs4 import BeautifulSoup
+import requests
+import os
+import dotenv
 
 
-# imports for various attempts to try and scrape Indeed.com
-
-# import hrequests
-# from selenium import webdriver
-# import chromedriver_binary  # Adds chromedriver binary to path
-# driver = webdriver.Chrome()
-# driver.get("https://www.indeed.com/")
-
-
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:157.0) Gecko/20100101 Firefox/157.0"
+dotenv.load_dotenv(".env")
+USER_AGENT = os.getenv("user_agent")
 
 
 class PageScraper:
     """
     Template class for other web scraping classes
-    Also initialise the SOUP
+    Also initialises the SOUP
     """
     def __init__(self, url):
         self.url = url
@@ -33,13 +27,16 @@ class PageScraper:
         rsp.raise_for_status()
         self.soup = BeautifulSoup(rsp.text, "html.parser")
 
+    def get_position_name(self):
+        # first h1 always (so far) contains position name
+        h1_tag = self.soup.find(name="h1")
+        position_name = h1_tag.text.strip()
+        return position_name
+
     def get_company_name(self):
         pass
 
     def get_location(self):
-        pass
-
-    def get_position_name(self):
         pass
 
 
@@ -69,21 +66,13 @@ class LinkedinScraper(PageScraper):
             return "Remote"
         return location
 
-    def get_position_name(self) -> str:
-        # first h1 contains position name
-        h1_tag = self.soup.find(name="h1")
-        position_name = h1_tag.text.strip()
-        return position_name
-
 
 class IndeedScraper(PageScraper):
     """
     html scraper for pages of the form
         https://uk.indeed.com/viewjob?jk=job_listing_id&hl=en
 
-    ***This is currently not working
-
-    TODO: Indeed has a strict security check to prevent scraping
+    TODO: selenium might work?
 
     Failed attempts:
     https://learnwebscraping.substack.com/p/how-i-scraped-indeed-website
@@ -95,19 +84,17 @@ class IndeedScraper(PageScraper):
         super().__init__(url)
         self.site = "Indeed"
 
+    def get_position_name(self):
+        # first h1 contains position name
+        h1_tag = self.soup.find(name="h1")
+        position_name = h1_tag.text.strip()
+        return position_name
+
     def get_company_name(self):
         pass
 
     def get_location(self):
         pass
-
-    def get_position_name(self):
-        # first h1 contains position name
-        h1_tag = self.soup.find(name="h1")
-        print(h1_tag)
-        print(self.soup.prettify())
-        position_name = h1_tag.text.strip()
-        return position_name
 
 
 class TotalJobsScraper(PageScraper):
@@ -140,8 +127,27 @@ class TotalJobsScraper(PageScraper):
         location = location_span.text.strip().split(" ")[0]  # get only first city name
         return location
 
-    def get_position_name(self):
-        # first h1 contains position name
-        h1_tag = self.soup.find(name="h1")
-        position_name = h1_tag.text.strip()
-        return position_name
+
+class ReedScraper(PageScraper):
+    """
+    html scraper for pages of the form
+        https://www.reed.co.uk/jobs/...
+    """
+    def __init__(self, url):
+        super().__init__(url)
+        self.site = "Reed"
+
+    def get_company_name(self):
+        posted_by_div = self.soup.select("div[class*='job-title-block_postedBy']")[0]
+        if posted_by_div.select("a"):
+            company_name = posted_by_div.select("a")[0].text
+        else:
+            company_name = posted_by_div.text.split("by ")[-1]
+        return company_name
+
+    def get_location(self):
+        job_metadata_ul = self.soup.select("ul[class^='index-module_jobMetadata']")[0]
+        job_metadata_li = job_metadata_ul.select("li")
+        # location is always in the 2nd li element
+        location = job_metadata_li[1].text.split(",")[0]
+        return location
