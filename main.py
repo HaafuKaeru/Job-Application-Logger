@@ -1,6 +1,6 @@
 from pprint import pprint
 from sheet_manager import SheetManager
-from web_scraper import LinkedinScraper, IndeedScraper, TotalJobsScraper, ReedScraper
+from web_scraper import LinkedinScraper, IndeedScraper, TotalJobsScraper, ReedScraper, WelcomeToTheJungleScraper
 from date_calculator import DateCalculator
 
 
@@ -32,16 +32,18 @@ def main():
             page_scraper = TotalJobsScraper(link)
         elif "reed" in link:
             page_scraper = ReedScraper(link)
+        elif "welcome" in link:
+            page_scraper = WelcomeToTheJungleScraper(link)
         else:
             print("Please insert a supported job posting website link\n")
             continue
-        company_name = page_scraper.get_company_name()
 
+        company_name = page_scraper.get_company_name()
         yes_no = input("Is this from a recruiting company? yes/no: ")
         is_recruiter = True if "yes" in yes_no.lower() else False
-
         if is_recruiter:
             company_name = f"N/A [{company_name}]"
+
         location = page_scraper.get_location()
         position_name = page_scraper.get_position_name()
 

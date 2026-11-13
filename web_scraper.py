@@ -2,7 +2,12 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import dotenv
+import logging
+from exceptions import *
 
+
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv(".env")
 USER_AGENT = os.getenv("user_agent")
@@ -19,24 +24,37 @@ class PageScraper:
         self.soup = None
         self._make_soup()
 
-    def _make_soup(self):
+    @staticmethod
+    def _handle_requests_errors(response: requests.Response) -> None:
+        status_code = response.status_code
+        response.raise_for_status()
+        if status_code == 202:
+            logger.error(
+                "The website accepted the request but it returned no data. "
+                "This is likely a deliberate measure to prevent web scraping. "
+                "Please try again in a few minutes."
+            )
+
+    def _make_soup(self) -> None:
         headers = {
             'User-Agent': self.user_agent,
         }
         rsp = requests.get(self.url, headers=headers)
-        rsp.raise_for_status()
+        self._handle_requests_errors(rsp)
         self.soup = BeautifulSoup(rsp.text, "html.parser")
+        if not self.soup:
+            raise EmptySoupError(type(self).__name__)
 
-    def get_position_name(self):
+    def get_position_name(self) -> str:
         # first h1 always (so far) contains position name
         h1_tag = self.soup.find(name="h1")
         position_name = h1_tag.text.strip()
         return position_name
 
-    def get_company_name(self):
+    def get_company_name(self) -> str:
         pass
 
-    def get_location(self):
+    def get_location(self) -> str:
         pass
 
 
@@ -150,4 +168,30 @@ class ReedScraper(PageScraper):
         job_metadata_li = job_metadata_ul.select("li")
         # location is always in the 2nd li element
         location = job_metadata_li[1].text.split(",")[0]
+        return location
+
+
+class WelcomeToTheJungleScraper(PageScraper):
+    """
+    html scraper for pages of the form
+        https://www.welcometothejungle.com/en/companies/...
+    """
+    def __init__(self, url):
+        super().__init__(url)
+        self.site = "WTTJ"
+
+    def get_position_name(self):
+        # print(self.soup)
+        h1_span = self.soup.select("h1 span")
+        position_name = h1_span[0].text.strip()
+        return position_name
+
+    def get_company_name(self):
+        a = self.soup.select("h1 span a")
+        company_name = a[0].text.strip()
+        return company_name
+
+    def get_location(self):
+        map_svg = self.soup.select("svg[class*='name-map-marker-alt']")[0]
+        location = map_svg.parent.find("span").text.strip()
         return location
