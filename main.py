@@ -59,7 +59,7 @@ def main():
             link,
             page_scraper.site
         )
-        pprint(result)
+        pprint(result["companiesList"])
         print("")
 
 

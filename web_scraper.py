@@ -6,7 +6,7 @@ import logging
 from exceptions import *
 
 
-logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
 dotenv.load_dotenv(".env")
