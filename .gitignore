@@ -2,3 +2,8 @@
 **/.env
 **/__pycache__/
 .idea/
+**/instance/
+*Db.*
+*.jpg
+*.png
+*.ico

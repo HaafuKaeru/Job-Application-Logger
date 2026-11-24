@@ -102,7 +102,7 @@ class IndeedScraper(PageScraper):
         super().__init__(url)
         self.site = "Indeed"
 
-    def get_position_name(self):
+    def get_position_name(self) -> str:
         # first h1 contains position name
         h1_tag = self.soup.find(name="h1")
         position_name = h1_tag.text.strip()
@@ -125,17 +125,17 @@ class TotalJobsScraper(PageScraper):
         self.site = "totaljobs"
         self.ul_element = self._get_unordered_list_element()
 
-    def _get_unordered_list_element(self):
+    def _get_unordered_list_element(self) -> str:
         # all useful info sits in the header, which is the first <ul> element in the html
         return self.soup.find(name="ul").select("li")
 
-    def get_company_name(self):
+    def get_company_name(self) -> str:
         company_name_li = self.ul_element[0]  # first <li> element contains the company name
         company_name_span = company_name_li.select("span")[0].select("span")[1].select("span")[0]
         company_name = company_name_span.text.strip()
         return company_name
 
-    def get_location(self):
+    def get_location(self) -> str:
         location_li = self.ul_element[1]  # second <li> element contains the location
         contract_li = self.ul_element[2]  # third <li> element contains the contract type
         contract_type = contract_li.select("span")[0].select("span")[1].select("span")[0]
@@ -155,7 +155,7 @@ class ReedScraper(PageScraper):
         super().__init__(url)
         self.site = "Reed"
 
-    def get_company_name(self):
+    def get_company_name(self) -> str:
         posted_by_div = self.soup.select("div[class*='job-title-block_postedBy']")[0]
         if posted_by_div.select("a"):
             company_name = posted_by_div.select("a")[0].text
@@ -163,7 +163,7 @@ class ReedScraper(PageScraper):
             company_name = posted_by_div.text.split("by ")[-1]
         return company_name
 
-    def get_location(self):
+    def get_location(self) -> str:
         job_metadata_ul = self.soup.select("ul[class^='index-module_jobMetadata']")[0]
         job_metadata_li = job_metadata_ul.select("li")
         # location is always in the 2nd li element
@@ -180,18 +180,18 @@ class WelcomeToTheJungleScraper(PageScraper):
         super().__init__(url)
         self.site = "WTTJ"
 
-    def get_position_name(self):
+    def get_position_name(self) -> str:
         # print(self.soup)
         h1_span = self.soup.select("h1 span")
         position_name = h1_span[0].text.strip()
         return position_name
 
-    def get_company_name(self):
+    def get_company_name(self) -> str:
         a = self.soup.select("h1 span a")
         company_name = a[0].text.strip()
         return company_name
 
-    def get_location(self):
+    def get_location(self) -> str:
         map_svg = self.soup.select("svg[class*='name-map-marker-alt']")[0]
         location = map_svg.parent.find("span").text.strip()
         return location

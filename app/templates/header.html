@@ -1,0 +1,24 @@
+<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="https://github.com/HaafuKaeru/Job-Application-Logger" target="_blank">
+      <span class="fa-stack fa-sm">
+        <i class="fas fa-circle fa-stack-2x"></i>
+        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+      Job Applications Tracker
+    </a>
+    <div class="collapse navbar-collapse" id="navbarColor03">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item px-2">
+          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link" href="{{ url_for('stats') }}">Stats</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link" href="{{ url_for('about') }}">About</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
