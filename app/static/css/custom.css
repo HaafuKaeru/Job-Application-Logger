@@ -1,3 +1,20 @@
 span.fa-stack {
   color: MediumSeaGreen;
 }
+
+i.green {
+  color: MediumSeaGreen;
+}
+
+a.add-margin {
+  margin-right: 10px;
+}
+
+td {
+    padding: 20px;
+    text-align: left;
+}
+
+#justify {
+  text-align: justify;
+}
