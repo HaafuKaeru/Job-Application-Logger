@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, url_for, render_template, request
 from sql import JobListing, db, db_sort_by
+from forms import AutoEntry, ManualEntry
 import csv
 import datetime as dt
 
@@ -36,9 +37,24 @@ def database():
     return render_template("database.html", table=table, sort_by=sort_by)
 
 
-@data.route("/tools/add")
-def add():
-    return render_template("add.html")
+@data.route("/tools/add", methods=['POST'])
+def add_auto():
+    auto_form = AutoEntry()
+    # if auto_form.scrape.data and auto_form.validate():
+    #     print("ok this works")
+    if auto_form.validate_on_submit():
+        print("auto validated")
+        return redirect(url_for("data.database", sort_by="date"))
+    return render_template("add.html", auto_form=auto_form, manual_form=ManualEntry())
+
+
+@data.route("/tools/add", methods=['POST'])
+def add_manual():
+    manual_form = ManualEntry()
+    if manual_form.validate_on_submit():
+        print("manual validated")
+        return redirect(url_for("data.database", sort_by="date"))
+    return render_template("add.html", auto_form=AutoEntry(), manual_form=manual_form)
 
 
 @data.route("/tools/delete")

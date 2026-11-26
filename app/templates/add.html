@@ -1,1 +1,54 @@
-<!--maybe use flask-wtforms-->
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_field %}
+
+{% block title %}
+  Add Data
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row my-4">
+    <div class="col">
+      <h1>Add a new entry</h1>
+      <p class="lead">
+        Add a single job application entry to the database.
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="container p-5 bg-body-tertiary rounded-3">
+        <div class="row">
+          <div class="col">
+            <h2>Automatic</h2>
+            <p class="lead">
+              Currently working for the following sites: Linkedin, totaljobs, Reed, WelcomeToTheJungle (WTTJ)
+            </p>
+            <form action="{{ url_for('data.add_auto') }}" method="post" novalidate>
+              {{ auto_form.csrf_token() }}
+              {{ render_field(auto_form.url_auto) }}
+              {{ render_field(auto_form.is_recruiting_auto) }}
+              {{ render_field(auto_form.scrape) }}
+            </form>
+          </div>
+        </div>
+        <div class="row my-5">
+          <div class="col">
+            <h2>Manual</h2>
+            <form action="{{ url_for('data.add_manual') }}" method="post" novalidate>
+              {{ manual_form.csrf_token() }}
+              {{ render_field(manual_form.company) }}
+              {{ render_field(manual_form.role) }}
+              {{ render_field(manual_form.location) }}
+              {{ render_field(manual_form.website) }}
+              {{ render_field(manual_form.url_manual) }}
+              {{ render_field(manual_form.is_recruiting_manual) }}
+              {{ render_field(manual_form.submit) }}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

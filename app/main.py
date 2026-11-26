@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
 from sql import db, db_count_all, db_count_ghosted, db_count_cv_accepted, db_count_interviews
-
+from forms import AutoEntry, ManualEntry
 from data_manager import data
 
 
@@ -39,14 +39,18 @@ def stats():
     return render_template("stats.html")
 
 
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-
 @app.route("/tools")
 def tools():
     return render_template("tools.html")
+
+
+@app.route("/tools/add")
+def add():
+    return render_template("add.html", auto_form=AutoEntry(), manual_form=ManualEntry())
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 if __name__ == '__main__':

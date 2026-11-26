@@ -8,34 +8,9 @@
 <br>
 <br>
 <div class="container p-5 bg-body-tertiary rounded-3">
-  <h1>Add a new entry</h1>
-  <p class="lead">
-    Add a single job application entry to the database.
-  </p>
-  <div class="row">
-    <div class="col">
-      <h2>Automated</h2>
-      <a href="{{ url_for('data.delete') }}" class="btn btn-primary btn-md add-margin">
-        Submit
-      </a>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <h2>Manual</h2>
-      <a href="{{ url_for('data.delete') }}" class="btn btn-primary btn-md add-margin">
-        Submit
-      </a>
-    </div>
-  </div>
-</div>
-
-<br>
-<br>
-<div class="container p-5 bg-body-tertiary rounded-3">
   <h1>Import from CSV</h1>
   <p class="lead">
-    Transfer data from a valid csv file to the db. <br>
+    Transfer data from a valid csv file to the database. <br>
     Currently, the button below just pushes whatever is in the <code>job_applications.csv</code> file
     in the <code>/app</code> directory.
   </p>
