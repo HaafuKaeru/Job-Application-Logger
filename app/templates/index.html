@@ -14,12 +14,12 @@
           A Flask-based local web app to track progress in job hunting.
         </p>
       </div>
-      <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">
+      <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="{{ url_for('data.database', sort_by='date')}}">
         <span>
           <i class="bi bi-plus-lg"></i>
         </span>
         New Entry
-      </button>
+      </a>
       <a type="button" class="btn btn-secondary btn-lg px-4 me-md-2" href="{{ url_for('data.database', sort_by='date')}}">
         View
       </a>

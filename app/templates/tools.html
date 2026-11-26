@@ -8,19 +8,26 @@
 <br>
 <br>
 <div class="container p-5 bg-body-tertiary rounded-3">
-  <h1>Manage data</h1>
+  <h1>Add a new entry</h1>
   <p class="lead">
-    View and modify?
+    Add a single job application entry to the database.
   </p>
-  <a href="{{ url_for('data.database', sort_by='date') }}" class="btn btn-primary btn-lg add-margin">
-    View
-  </a>
-  <a href="{{ url_for('data.add') }}" class="btn btn-primary btn-lg add-margin">
-    Add
-  </a>
-  <a href="{{ url_for('data.delete') }}" class="btn btn-danger btn-lg add-margin">
-    Delete
-  </a>
+  <div class="row">
+    <div class="col">
+      <h2>Automated</h2>
+      <a href="{{ url_for('data.delete') }}" class="btn btn-primary btn-md add-margin">
+        Submit
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2>Manual</h2>
+      <a href="{{ url_for('data.delete') }}" class="btn btn-primary btn-md add-margin">
+        Submit
+      </a>
+    </div>
+  </div>
 </div>
 
 <br>
@@ -32,8 +39,20 @@
     Currently, the button below just pushes whatever is in the <code>job_applications.csv</code> file
     in the <code>/app</code> directory.
   </p>
-  <a href="{{ url_for('data.import_csv') }}" class="btn btn-primary btn-lg">
+  <a href="{{ url_for('data.import_csv') }}" class="btn btn-info btn-lg">
     Convert
+  </a>
+</div>
+
+<br>
+<br>
+<div class="container p-5 bg-body-tertiary rounded-3">
+  <h1>Delete Data</h1>
+  <p class="lead">
+    The button below deletes the whole database. Use carefully!
+  </p>
+  <a href="{{ url_for('data.delete') }}" class="btn btn-danger btn-lg add-margin">
+    Delete
   </a>
 </div>
 {% endblock %}
