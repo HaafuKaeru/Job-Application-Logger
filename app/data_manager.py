@@ -1,39 +1,7 @@
 from flask import Blueprint, redirect, url_for, render_template, request
-from database import JobListing, db
-from sqlalchemy import or_
+from sql import JobListing, db, db_sort_by
 import csv
 import datetime as dt
-
-
-# helper functions
-
-def db_sort_by(key) -> list[JobListing]:
-    table = []
-    for entry in db.session.query(JobListing).order_by(key):
-        table.append(entry)
-    return table
-
-def db_count_all() -> int:
-    return db.session.query(JobListing.id).count()
-
-def db_count_ghosted() -> int:
-    results = db.session.execute(
-        db.select(JobListing).where(
-            or_(
-                JobListing.cv_stage == "",
-                JobListing.cv_stage.contains("?")
-            )
-        )
-    )
-    return len(list(results.scalars()))
-
-def db_count_cv_accepted() -> int:
-    results = db.session.execute(db.select(JobListing).where(JobListing.cv_stage == "Yes")).scalars()
-    return len(list(results))
-
-def db_count_interviews() -> int:
-    results = db.session.execute(db.select(JobListing).where(JobListing.interview_stage == "Yes")).scalars()
-    return len(list(results))
 
 
 data = Blueprint("data", __name__)
@@ -55,8 +23,8 @@ def import_csv():
     return redirect(url_for("tools"))
 
 
-@data.route("/tools/view")
-def view():
+@data.route("/tools/database")
+def database():
     sort_by = request.args.get("sort_by")
     table = []
     if sort_by == "date":
@@ -65,7 +33,7 @@ def view():
         table = db_sort_by(JobListing.company)
     if sort_by == "role":
         table = db_sort_by(JobListing.role)
-    return render_template("view.html", table=table, sort_by=sort_by)
+    return render_template("database.html", table=table, sort_by=sort_by)
 
 
 @data.route("/tools/add")

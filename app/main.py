@@ -1,8 +1,8 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap5
-from database import db
+from sql import db, db_count_all, db_count_ghosted, db_count_cv_accepted, db_count_interviews
 
-from data_manager import data, db_count_all, db_count_ghosted, db_count_cv_accepted, db_count_interviews
+from data_manager import data
 
 
 app = Flask(__name__)

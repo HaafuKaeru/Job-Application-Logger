@@ -15,7 +15,7 @@
         <div class="container">
           <div class="row justify-content-end align-items-center">
             <div class="col-2">
-              <label>Sorted by <code>{{ sort_by }}</code></label>
+              <label>Sorted by <code>{{ sort_by.upper() }}</code></label>
             </div>
             <div class="col-1">
               <div class="dropdown">
@@ -23,9 +23,9 @@
                   Options
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url_for('data.view', sort_by='date') }}">Date Applied</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('data.view', sort_by='company') }}">Company Name</a></li>
-                  <li><a class="dropdown-item" href="{{ url_for('data.view', sort_by='role') }}">Role Title</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('data.database', sort_by='date') }}">Date Applied</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('data.database', sort_by='company') }}">Company Name</a></li>
+                  <li><a class="dropdown-item" href="{{ url_for('data.database', sort_by='role') }}">Role Title</a></li>
                 </ul>
               </div>
             </div>
