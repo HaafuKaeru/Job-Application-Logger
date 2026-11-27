@@ -6,3 +6,5 @@ are automatically fed into a personal Google sheet specified in the backend. No 
 Web scraping with <a href="https://beautiful-soup-4.readthedocs.io/en/latest/">BeautifulSoup</a>
 
 Google sheet access with <a href="https://sheety.co/">Sheety API</a>
+
+A Flask-powered web version is coming soon!
